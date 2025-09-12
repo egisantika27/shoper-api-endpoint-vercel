@@ -16,7 +16,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const allowedOrigin = "https://shoper-page-landing-d5hicj9e8-egisantika27s-projects.vercel.app";
+const allowedOrigin = "https://shoper-page-landing.vercel.app";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": allowedOrigin,
