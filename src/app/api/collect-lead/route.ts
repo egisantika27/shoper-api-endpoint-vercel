@@ -20,7 +20,7 @@ const supabase = createClient(
 
 // Definisikan header CORS di satu tempat agar mudah dikelola
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*', // Ganti dengan domain spesifik Anda di produksi
+  'Access-Control-Allow-Origin': 'https://shoper-page-landing.vercel.app/', // Ganti dengan domain spesifik Anda di produksi
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
