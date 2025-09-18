@@ -58,29 +58,30 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
-    // ✅ Kirim event ke events-log
     try {
-      await supabase.functions.invoke("events-log", {
-        body: {
-          eventName: "Lead",
-          eventData: {
-            nama: leadData.nama,
-            email: leadData.email,
-            phone: leadData.phone,
-            source_page: leadData.source_page,
-          },
-          clientInfo: {
-            ip: leadData.ip,
-            userAgent: leadData.user_agent,
-            url: leadData.source_page,
-          },
-        },
-      });
-      console.log("✅ Event Lead berhasil dikirim ke events-log");
-    } catch (logError) {
-      console.error("❌ Gagal mengirim event Lead ke events-log:", logError);
-    }
-    
+	  await supabase.functions.invoke("events-log", {
+	    body: {
+	      eventName: "Lead",
+	      eventData: {
+	        nama: leadData.nama,
+	        email: leadData.email,
+	        phone: leadData.phone,
+	        source_page: leadData.source_page,
+	      },
+	      clientInfo: {
+			// --- TAMBAHKAN BARIS INI ---
+	        sessionId: `${leadData.email}-${Date.now()}`, // atau gunakan UUID jika Anda memiliki library
+	        ip: leadData.ip,
+	        userAgent: leadData.user_agent,
+	        url: leadData.source_page,
+	      },
+	    },
+	  });
+	  console.log("✅ Event Lead berhasil dikirim ke events-log");
+	} catch (logError) {
+	  console.error("❌ Gagal mengirim event Lead ke events-log:", logError);
+	}
+		
     return NextResponse.json({ success: true, data }, { headers: corsHeaders });
   } catch (err) {
     console.error("API error:", err);
