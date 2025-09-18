@@ -25,7 +25,7 @@ const corsHeaders = {
 };
 
 // --- OPTIONS preflight ---
-export async function OPTIONS(req: Request) {
+export async function OPTIONS(_req: Request) {
   return NextResponse.json({}, { status: 200, headers: corsHeaders });
 }
 
