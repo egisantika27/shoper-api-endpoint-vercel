@@ -44,6 +44,32 @@ export async function POST(req: Request) {
       );
     }
 
+// ======================================================
+    // 💡 Langkah Baru: Cek Duplikasi Email
+    // ======================================================
+
+    const { count: existingCount, error: checkError } = await supabase
+      .from("leads")
+      .select("email", { count: "exact", head: true })
+      .eq("email", body.email);
+    
+    // Tangani error saat pengecekan
+    if (checkError) {
+      console.error("❌ Error saat memeriksa duplikasi:", checkError);
+      throw checkError;
+    }
+
+    // Jika email sudah terdaftar, kirim respons 409 Conflict
+    if (existingCount && existingCount > 0) {
+      console.log(`⚠️ Email ${body.email} sudah ada (${existingCount} record). INSERT dibatalkan.`);
+      return NextResponse.json(
+        { success: false, error: "Email sudah terdaftar" },
+        // Menggunakan status 409 Conflict
+        { status: 409, headers: corsHeaders } 
+      );
+    }
+    // ======================================================
+
     const leadData = {
       nama: body.nama,
       email: body.email,
